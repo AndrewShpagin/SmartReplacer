@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="comms::cList&lt;*&gt;">
+    <DisplayString> size={m_Container->Count}, {m_Container->List,[m_Container->Count]} </DisplayString>
+    <Expand>
+      <ArrayItems>
+        <Size>m_Container->Count</Size>
+        <ValuePointer>m_Container->List</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <Type Name="uni_hash&lt;*&gt;">
+    <DisplayString>size={pool.m_Container->Count*$T4-freeVals.m_Container->Count}, table_size={TableSize}</DisplayString>
+    <Expand>
+      <Item Name="[table_size]">TableSize</Item>
+      <Item Name="[size]">pool.m_Container->Count*$T4-freeVals.m_Container->Count</Item>
+      <CustomListItems>
+        <Variable Name="tpos" InitialValue="0" />
+        <Variable Name="elm" InitialValue="table[tpos]"/>
+        <Variable Name="loc" InitialValue="0" />
+        <Loop>
+          <If Condition="table[tpos] != nullptr">
+            <Exec>elm = table[tpos]</Exec>
+            <Exec>loc = 0</Exec>
+            <Loop>
+              <If Condition="elm != nullptr">
+                <Item Name ='{tpos}:  [{elm->key}]'>elm->element</Item>
+                <Exec>elm = elm->next</Exec>
+                <Exec>loc++</Exec>
+              </If>
+              <Break Condition="elm == nullptr"/>
+            </Loop>
+          </If>
+          <Exec>tpos++</Exec>
+          <Break Condition="tpos >= TableSize" />
+        </Loop>
+      </CustomListItems>
+    </Expand>
+  </Type>
+  <Type Name="xmlQuote">
+    <DisplayString Condition="Body.L>0">&lt;{QuoteName}&gt;{Body}&lt;/{QuoteName}&gt;</DisplayString>
+    <DisplayString Condition="Body.L==0">&lt;{QuoteName}&gt;{SubQuotes.m_Container->Count} items&lt;/{QuoteName}&gt;</DisplayString>
+    <DisplayString>&lt;{QuoteName}&gt;...empty...&lt;/{QuoteName}&gt;</DisplayString>
+    <Expand>
+      <ExpandedItem>SubQuotes</ExpandedItem>      
+    </Expand>
+  </Type>
+  <Type Name="comms::cStr">
+    <DisplayString>{m_Str,na}</DisplayString>
+    <Expand>
+      <Item Name="[len]">m_Length</Item>
+      <ArrayItems>
+        <Size>m_Length</Size>
+        <ValuePointer>m_Str</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <Type Name="_str">
+    <DisplayString>{str,na}</DisplayString>
+    <Expand>
+      <Item Name="[len]">L</Item>
+      <ArrayItems>
+        <Size>L</Size>
+        <ValuePointer>str</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <Type Name="DString">
+    <DisplayString>{str,na}</DisplayString>
+    <Expand>
+      <Item Name="[len]">L</Item>
+      <ArrayItems>
+        <Size>L</Size>
+        <ValuePointer>str</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <Type Name="comms::cMat3">
+    <DisplayString>Matrix 3x3, det = {m_Rows[0].x*m_Rows[1].y*m_Rows[2].z - m_Rows[2].x*m_Rows[1].y*m_Rows[0].z + m_Rows[2].x*m_Rows[0].y*m_Rows[1].z + m_Rows[1].x*m_Rows[2].y*m_Rows[0].z - m_Rows[1].x*m_Rows[0].y*m_Rows[2].z - m_Rows[0].x*m_Rows[2].y*m_Rows[1].z}, trace = {m_Rows[0].x + m_Rows[1].y + m_Rows[2].z}</DisplayString>
+    <Expand>
+      <ArrayItems>
+        <Rank>1</Rank>
+        <Size>3</Size>
+        <ValuePointer>m_Rows</ValuePointer>
+      </ArrayItems>
+      <Item Name="Det">m_Rows[0].x*m_Rows[1].y*m_Rows[2].z - m_Rows[2].x*m_Rows[1].y*m_Rows[0].z + m_Rows[2].x*m_Rows[0].y*m_Rows[1].z + m_Rows[1].x*m_Rows[2].y*m_Rows[0].z - m_Rows[1].x*m_Rows[0].y*m_Rows[2].z - m_Rows[0].x*m_Rows[2].y*m_Rows[1].z</Item>
+    </Expand>
+  </Type>
+  <Type Name="comms::cMat4">
+    <Expand>
+      <ArrayItems>
+        <Rank>1</Rank>
+        <Size>4</Size>
+        <ValuePointer>m_Rows</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <Type Name="comms::dMat3">
+    <DisplayString>(double) Matrix 3x3, det = {m_Rows[0].x*m_Rows[1].y*m_Rows[2].z - m_Rows[2].x*m_Rows[1].y*m_Rows[0].z + m_Rows[2].x*m_Rows[0].y*m_Rows[1].z + m_Rows[1].x*m_Rows[2].y*m_Rows[0].z - m_Rows[1].x*m_Rows[0].y*m_Rows[2].z - m_Rows[0].x*m_Rows[2].y*m_Rows[1].z}, trace = {m_Rows[0].x + m_Rows[1].y + m_Rows[2].z}</DisplayString>
+    <Expand>
+      <ArrayItems>
+        <Rank>1</Rank>
+        <Size>3</Size>
+        <ValuePointer>m_Rows</ValuePointer>
+      </ArrayItems>
+      <Item Name="Det">m_Rows[0].x*m_Rows[1].y*m_Rows[2].z - m_Rows[2].x*m_Rows[1].y*m_Rows[0].z + m_Rows[2].x*m_Rows[0].y*m_Rows[1].z + m_Rows[1].x*m_Rows[2].y*m_Rows[0].z - m_Rows[1].x*m_Rows[0].y*m_Rows[2].z - m_Rows[0].x*m_Rows[2].y*m_Rows[1].z</Item>
+    </Expand>
+  </Type>
+  <Type Name="comms::dMat4">
+    <Expand>
+      <ArrayItems>
+        <Rank>1</Rank>
+        <Size>4</Size>
+        <ValuePointer>m_Rows</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <Type Name="comms::cVec2">
+    <DisplayString>({x}, {y})</DisplayString>
+  </Type>
+  <Type Name="comms::cVec3">
+    <DisplayString>({x}, {y}, {z})</DisplayString>
+  </Type>
+  <Type Name="comms::cVec&lt;int,3&gt;">
+    <DisplayString>{v[0]}, {v[1]}, {v[2]}</DisplayString>
+  </Type>
+  <Type Name="comms::cVec4">
+    <DisplayString>({x}, {y}, {z}, {w})</DisplayString>
+  </Type>
+  <Type Name="comms::dVec2">
+    <DisplayString>({x}, {y})</DisplayString>
+  </Type>
+  <Type Name="comms::dVec3">
+    <DisplayString>({x}, {y}, {z})</DisplayString>
+  </Type>
+  <Type Name="comms::dVec4">
+    <DisplayString>({x}, {y}, {z}, {w})</DisplayString>
+  </Type>
+  <Type Name="comms::cRect">
+    <DisplayString>(x = {m_Min.x}, y = {m_Min.y}, w = {m_Max.x-m_Min.x}, h = {m_Max.y-m_Min.y})</DisplayString>
+    <Expand>
+      <Item Name ="m_Min">m_Min</Item>
+      <Item Name ="m_Max">m_Max</Item>
+      <Item Name ="Width">m_Max.x-m_Min.x</Item>
+      <Item Name ="Height">m_Max.y-m_Min.y</Item>
+    </Expand>
+  </Type>
+  <Type Name="VoxTreeBranch">
+    <DisplayString>{Name}, SpaceID={SpaceID}, InSurfaceMode={VoxSurf}</DisplayString>
+    <Expand>
+      <Synthetic Name="Properties">
+        <DisplayString>Visible={Visible}, Selected={Selected}, Surface={VoxSurf}, Ghost={Ghost}, Instance={Instance}, InCache={InCache}</DisplayString>
+        <Expand>
+          <Item Name="Obj">Obj</Item>
+          <Item Name="Visible">Visible</Item>
+          <Item Name="Ghost">Ghost</Item>
+          <Item Name="Instance">Instance</Item>
+          <Item Name="VoxSurf">VoxSurf</Item>
+          <Item Name="SpaceID">SpaceID</Item>
+          <Item Name="Selected">Selected</Item>
+          <Item Name="InCache">InCache</Item>
+          <Item Name="CacheName">CacheName</Item>
+          <Item Name="Parent">Parent</Item>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="Transform">
+        <DisplayString>Scale={Obj->ScaleFactor}, Translation={Transform.m_Rows[3]}</DisplayString>
+        <Expand>
+          <Item Name="Transform">Transform</Item>
+          <Item Name="InvTransform">InvTransform</Item>
+          <Item Name="Inverse">Inverse</Item>
+        </Expand>
+      </Synthetic>
+      <Item Name="ChildObjects">ChildObjects</Item>
+    </Expand>
+  </Type>
+  <Type Name="OneCurveObject">
+    <DisplayString>{Name}, GUID={GUID}, Visible={Visible}, Closed={Closed}</DisplayString>
+    <Expand>
+      <Synthetic Name="Properties">
+        <DisplayString>Visible={Visible}, Selected={Selected}</DisplayString>
+        <Expand>
+          <Item Name="Visible">Visible</Item>
+          <Item Name="OpenState">OpenState</Item>
+          <Item Name="Enabled">Enabled</Item>
+          <Item Name="Selected">Selected</Item>
+          <Item Name="UIDStamp">UIDStamp</Item>
+          <Item Name="Closed">Closed</Item>
+          <Item Name="Highlighted">Highlighted</Item>
+          <Item Name="ShowNormals">ShowNormals</Item>
+          <Item Name="DrawStarted">DrawStarted</Item>
+          <Item Name="ShowHelpersGuides">ShowHelpersGuides</Item>
+          <Item Name="SnapToCurvePoints">SnapToCurvePoints</Item>
+          <Item Name="LockRadius">LockRadius</Item>
+          <Item Name="SnapToSurfaces">SnapToSurfaces</Item>
+          <Item Name="KeepInPlane">KeepInPlane</Item>
+          <Item Name="Highlighted">Highlighted</Item>
+          <Item Name="Color">Color</Item>
+          <Item Name="ObjectID">ObjectID</Item>
+          <Item Name="GUID">GUID</Item>
+          <Item Name="PointsHash">PointsHash</Item>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="Points">
+        <DisplayString>Points:{Points}</DisplayString>
+        <Expand>
+          <Item Name="Points">Points</Item>
+          <Item Name="RenderPoints">RenderPoints</Item>
+        </Expand>
+      </Synthetic>
+      <Item Name="Child">Child</Item>
+    </Expand>
+  </Type>
+  <Type Name="OneCurveObject">
+    <DisplayString>{Name}, GUID={GUID}, Visible={Visible}, Closed={Closed}</DisplayString>
+    <Expand>
+      <Synthetic Name="Properties">
+        <DisplayString>Visible={Visible}, Selected={Selected}</DisplayString>
+        <Expand>
+          <Item Name="Visible">Visible</Item>
+          <Item Name="OpenState">OpenState</Item>
+          <Item Name="Enabled">Enabled</Item>
+          <Item Name="Selected">Selected</Item>
+          <Item Name="UIDStamp">UIDStamp</Item>
+          <Item Name="Closed">Closed</Item>
+          <Item Name="Highlighted">Highlighted</Item>
+          <Item Name="ShowNormals">ShowNormals</Item>
+          <Item Name="DrawStarted">DrawStarted</Item>
+          <Item Name="ShowHelpersGuides">ShowHelpersGuides</Item>
+          <Item Name="SnapToCurvePoints">SnapToCurvePoints</Item>
+          <Item Name="LockRadius">LockRadius</Item>
+          <Item Name="SnapToSurfaces">SnapToSurfaces</Item>
+          <Item Name="KeepInPlane">KeepInPlane</Item>
+          <Item Name="Highlighted">Highlighted</Item>
+          <Item Name="Color">Color</Item>
+          <Item Name="ObjectID">ObjectID</Item>
+          <Item Name="GUID">GUID</Item>
+          <Item Name="PointsHash">PointsHash</Item>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="Points">
+        <DisplayString>Points:{Points}</DisplayString>
+        <Expand>
+          <Item Name="Points">Points</Item>
+          <Item Name="RenderPoints">RenderPoints</Item>
+        </Expand>
+      </Synthetic>
+      <Item Name="Child">Child</Item>
+    </Expand>
+  </Type>
+  <Type Name="BaseWidget">
+    <DisplayString>Name={Name}, Visible={Visible}, Hint={Hint}</DisplayString>
+    <Expand>
+      <Synthetic Name="IDS">
+        <DisplayString>Name={Name}, Name2={Name2}, FieldName={FieldName}, UserInt={UserInt}</DisplayString>
+        <Expand>
+          <Item Name="Name">Name</Item>
+          <Item Name="Name2">Name2</Item>
+          <Item Name="FieldName">FieldName</Item>
+          <Item Name="UserInt">UserInt</Item>
+          <Item Name="Hint">Hint</Item>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="Color and placement">
+        <DisplayString>Rect={Rect}, CurrentPos={CurrentPos}, PopupPos={PopupPos}, EnablePopup={EnablePopup}</DisplayString>
+        <Expand>
+          <Item Name="Rect">Rect</Item>
+          <Item Name="CurrentPos">CurrentPos</Item>
+          <Item Name="PopupPos">PopupPos</Item>
+          <Item Name="EnablePopup">EnablePopup</Item>          
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="Properties">
+        <DisplayString>Visible={Visible}, MouseOver={MouseOver}</DisplayString>
+        <Expand>
+          <Item Name="Visible">Visible</Item>
+          <Item Name="Enabled">Enabled</Item>
+          <Item Name="Destroyed">Destroyed</Item>
+          <Item Name="MouseOver">MouseOver</Item>
+          <Item Name="ClipSubWidgets">ClipSubWidgets</Item>
+          <Item Name="HaveFocus">HaveFocus</Item>
+          <Item Name="AcceptMouse">AcceptMouse</Item>
+          <Item Name="AbsorbMouseOver">AbsorbMouseOver</Item>
+          <Item Name="ClickAccepted">ClickAccepted</Item>
+          <Item Name="PreserveColors">PreserveColors</Item>
+          <Item Name="SkipClip">SkipClip</Item>
+          <Item Name="Moveable">Moveable</Item>
+          <Item Name="SkipScroller">SkipScroller</Item>
+          <Item Name="NaviSkipper">NaviSkipper</Item>
+          <Item Name="HideHotkey">HideHotkey</Item>
+          <Item Name="HideHotkey">HideHotkey</Item>
+          <Item Name="SkipBound">SkipBound</Item>
+          <Item Name="Special">Special</Item>
+        </Expand>
+      </Synthetic>
+      <Item Name="Callbacks">Callbacks</Item>
+      <Item Name="SubWidgets">SubWidgets</Item>
+    </Expand>
+  </Type>
+  <Type Name="TextWidget">
+    <DisplayString>Name={Name}, Visible={Visible}, Hint={Hint}</DisplayString>
+    <Expand>
+      <Synthetic Name="TextWidget">
+        <DisplayString>{Text}</DisplayString>
+        <Expand>
+          <Item Name="Text">Text</Item>
+          <Item Name="BoolPtr">BoolPtr</Item>
+          <Item Name="IntPtr">IntPtr</Item>
+          <Item Name="IntEthalon">IntEthalon</Item>
+          <Item Name="GroupID">GroupID</Item>
+          <Item Name="Align">Align</Item>
+          <Item Name="AlignY">AlignY</Item>
+          <Item Name="InvertBool">AlignY</Item>
+          <Item Name="ShortBool">ShortBool</Item>
+          <Item Name="TexSizeY">TexSizeY</Item>
+          <Item Name="ExTexture">ExTexture</Item>
+          <Item Name="TextureColor">TextureColor</Item>
+          <Item Name="IconDx">IconDx</Item>
+          <Item Name="IconDy">IconDy</Item>
+          <Item Name="TexSizeX">TexSizeX</Item>
+          <Item Name="TexSizeY">TexSizeY</Item>
+          <Item Name="ExLMargin">ExLMargin</Item>
+          <Item Name="ExRMargin">ExRMargin</Item>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="IDS">
+        <DisplayString>Name={Name}, Name2={Name2}, FieldName={FieldName}, UserInt={UserInt}</DisplayString>
+        <Expand>
+          <Item Name="Name">Name</Item>
+          <Item Name="Name2">Name2</Item>
+          <Item Name="FieldName">FieldName</Item>
+          <Item Name="UserInt">UserInt</Item>
+          <Item Name="Hint">Hint</Item>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="Color and placement">
+        <DisplayString>Rect={Rect}, CurrentPos={CurrentPos}, PopupPos={PopupPos}, EnablePopup={EnablePopup}</DisplayString>
+        <Expand>
+          <Item Name="Rect">Rect</Item>
+          <Item Name="CurrentPos">CurrentPos</Item>
+          <Item Name="PopupPos">PopupPos</Item>
+          <Item Name="EnablePopup">EnablePopup</Item>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="Properties">
+        <DisplayString>Visible={Visible}, MouseOver={MouseOver}</DisplayString>
+        <Expand>
+          <Item Name="Visible">Visible</Item>
+          <Item Name="Enabled">Enabled</Item>
+          <Item Name="Destroyed">Destroyed</Item>
+          <Item Name="MouseOver">MouseOver</Item>
+          <Item Name="ClipSubWidgets">ClipSubWidgets</Item>
+          <Item Name="HaveFocus">HaveFocus</Item>
+          <Item Name="AcceptMouse">AcceptMouse</Item>
+          <Item Name="AbsorbMouseOver">AbsorbMouseOver</Item>
+          <Item Name="ClickAccepted">ClickAccepted</Item>
+          <Item Name="PreserveColors">PreserveColors</Item>
+          <Item Name="SkipClip">SkipClip</Item>
+          <Item Name="Moveable">Moveable</Item>
+          <Item Name="SkipScroller">SkipScroller</Item>
+          <Item Name="NaviSkipper">NaviSkipper</Item>
+          <Item Name="HideHotkey">HideHotkey</Item>
+          <Item Name="HideHotkey">HideHotkey</Item>
+          <Item Name="SkipBound">SkipBound</Item>
+          <Item Name="Special">Special</Item>
+        </Expand>
+      </Synthetic>
+      <Item Name="Callbacks">Callbacks</Item>
+      <Item Name="SubWidgets">SubWidgets</Item>
+    </Expand>
+  </Type>
+  <Type Name="Framewidget">
+    <DisplayString>Name={Name}, Visible={Visible}, Hint={Hint}</DisplayString>
+    <Expand>
+      <Synthetic Name="TextWidget">
+        <DisplayString>{Text}</DisplayString>
+        <Expand>
+          <Item Name="Text">Text</Item>
+          <Item Name="BoolPtr">BoolPtr</Item>
+          <Item Name="IntPtr">IntPtr</Item>
+          <Item Name="IntEthalon">IntEthalon</Item>
+          <Item Name="GroupID">GroupID</Item>
+          <Item Name="Align">Align</Item>
+          <Item Name="AlignY">AlignY</Item>
+          <Item Name="InvertBool">AlignY</Item>
+          <Item Name="ShortBool">ShortBool</Item>
+          <Item Name="TexSizeY">TexSizeY</Item>
+          <Item Name="ExTexture">ExTexture</Item>
+          <Item Name="TextureColor">TextureColor</Item>
+          <Item Name="IconDx">IconDx</Item>
+          <Item Name="IconDy">IconDy</Item>
+          <Item Name="TexSizeX">TexSizeX</Item>
+          <Item Name="TexSizeY">TexSizeY</Item>
+          <Item Name="ExLMargin">ExLMargin</Item>
+          <Item Name="ExRMargin">ExRMargin</Item>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="IDS">
+        <DisplayString>Name={Name}, Name2={Name2}, FieldName={FieldName}, UserInt={UserInt}</DisplayString>
+        <Expand>
+          <Item Name="Name">Name</Item>
+          <Item Name="Name2">Name2</Item>
+          <Item Name="FieldName">FieldName</Item>
+          <Item Name="UserInt">UserInt</Item>
+          <Item Name="Hint">Hint</Item>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="Color and placement">
+        <DisplayString>Rect={Rect}, CurrentPos={CurrentPos}, PopupPos={PopupPos}, EnablePopup={EnablePopup}</DisplayString>
+        <Expand>
+          <Item Name="Rect">Rect</Item>
+          <Item Name="CurrentPos">CurrentPos</Item>
+          <Item Name="PopupPos">PopupPos</Item>
+          <Item Name="EnablePopup">EnablePopup</Item>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="Properties">
+        <DisplayString>Visible={Visible}, MouseOver={MouseOver}</DisplayString>
+        <Expand>
+          <Item Name="Visible">Visible</Item>
+          <Item Name="Enabled">Enabled</Item>
+          <Item Name="Destroyed">Destroyed</Item>
+          <Item Name="MouseOver">MouseOver</Item>
+          <Item Name="ClipSubWidgets">ClipSubWidgets</Item>
+          <Item Name="HaveFocus">HaveFocus</Item>
+          <Item Name="AcceptMouse">AcceptMouse</Item>
+          <Item Name="AbsorbMouseOver">AbsorbMouseOver</Item>
+          <Item Name="ClickAccepted">ClickAccepted</Item>
+          <Item Name="PreserveColors">PreserveColors</Item>
+          <Item Name="SkipClip">SkipClip</Item>
+          <Item Name="Moveable">Moveable</Item>
+          <Item Name="SkipScroller">SkipScroller</Item>
+          <Item Name="NaviSkipper">NaviSkipper</Item>
+          <Item Name="HideHotkey">HideHotkey</Item>
+          <Item Name="HideHotkey">HideHotkey</Item>
+          <Item Name="SkipBound">SkipBound</Item>
+          <Item Name="Special">Special</Item>
+        </Expand>
+      </Synthetic>
+      <Item Name="Callbacks">Callbacks</Item>
+      <Item Name="SubWidgets">SubWidgets</Item>
+    </Expand>
+  </Type>
+
+  <!-- Fixed x Fixed Matrix -->
+  <Type Name="Eigen::Matrix&lt;*,*,*,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Array&lt;*,-1,-1,*,*,*&gt;"/>
+    <DisplayString>[{$T2}, {$T3}] (fixed matrix)</DisplayString>
+    <Expand>
+      <ArrayItems Condition="Flags%2">
+        <!-- row major layout -->
+        <Rank>2</Rank>
+        <Size>$i==0 ? $T2 : $T3</Size>
+        <ValuePointer>m_storage.m_data.array</ValuePointer>
+      </ArrayItems>
+      <ArrayItems Condition="!(Flags%2)">
+        <!-- column major layout -->
+        <Direction>Backward</Direction>
+        <Rank>2</Rank>
+        <Size>$i==0 ? $T2 : $T3</Size>
+        <ValuePointer>m_storage.m_data.array</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <!-- 2 x 2 Matrix -->
+  <Type Name="Eigen::Matrix&lt;*,2,2,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Array&lt;*,2,2,*,*,*&gt;"/>
+    <DisplayString>[2, 2] (fixed matrix)</DisplayString>
+    <Expand>
+      <Synthetic Name="[row 0]" Condition="Flags%2">
+        <DisplayString>({m_storage.m_data.array[0]}, {m_storage.m_data.array[1]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 0]" Condition="!(Flags%2)">
+        <DisplayString>({m_storage.m_data.array[0]}, {m_storage.m_data.array[2]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 1]" Condition="Flags%2">
+        <DisplayString>({m_storage.m_data.array[2]}, {m_storage.m_data.array[3]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 1]" Condition="!(Flags%2)">
+        <DisplayString>({m_storage.m_data.array[1]}, {m_storage.m_data.array[3]})</DisplayString>
+      </Synthetic>
+    </Expand>
+  </Type>
+
+  <!-- 3 x 3 Matrix -->
+  <Type Name="Eigen::Matrix&lt;*,3,3,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Array&lt;*,3,3,*,*,*&gt;"/>
+    <DisplayString>[3, 3] (fixed matrix)</DisplayString>
+    <Expand>
+      <Synthetic Name="[row 0]" Condition="Flags%2">
+        <DisplayString>({m_storage.m_data.array[0]}, {m_storage.m_data.array[1]}, {m_storage.m_data.array[2]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 0]" Condition="!(Flags%2)">
+        <DisplayString>({m_storage.m_data.array[0]}, {m_storage.m_data.array[3]}, {m_storage.m_data.array[6]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 1]" Condition="Flags%2">
+        <DisplayString>({m_storage.m_data.array[3]}, {m_storage.m_data.array[4]}, {m_storage.m_data.array[5]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 1]" Condition="!(Flags%2)">
+        <DisplayString>({m_storage.m_data.array[1]}, {m_storage.m_data.array[4]}, {m_storage.m_data.array[7]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 2]" Condition="Flags%2">
+        <DisplayString>({m_storage.m_data.array[6]}, {m_storage.m_data.array[7]}, {m_storage.m_data.array[8]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 2]" Condition="!(Flags%2)">
+        <DisplayString>({m_storage.m_data.array[2]}, {m_storage.m_data.array[5]}, {m_storage.m_data.array[8]})</DisplayString>
+      </Synthetic>
+    </Expand>
+  </Type>
+
+  <!-- 4 x 4 Matrix -->
+  <Type Name="Eigen::Matrix&lt;*,4,4,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Array&lt;*,4,4,*,*,*&gt;"/>
+    <DisplayString>[4, 4] (fixed matrix)</DisplayString>
+    <Expand>
+      <Synthetic Name="[row 0]" Condition="Flags%2">
+        <DisplayString>({m_storage.m_data.array[0]}, {m_storage.m_data.array[1]}, {m_storage.m_data.array[2]}, {m_storage.m_data.array[3]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 0]" Condition="!(Flags%2)">
+        <DisplayString>({m_storage.m_data.array[0]}, {m_storage.m_data.array[4]}, {m_storage.m_data.array[8]}, {m_storage.m_data.array[12]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 1]" Condition="Flags%2">
+        <DisplayString>({m_storage.m_data.array[4]}, {m_storage.m_data.array[5]}, {m_storage.m_data.array[6]}, {m_storage.m_data.array[7]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 1]" Condition="!(Flags%2)">
+        <DisplayString>({m_storage.m_data.array[1]}, {m_storage.m_data.array[5]}, {m_storage.m_data.array[9]}, {m_storage.m_data.array[13]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 2]" Condition="Flags%2">
+        <DisplayString>({m_storage.m_data.array[8]}, {m_storage.m_data.array[9]}, {m_storage.m_data.array[10]}, {m_storage.m_data.array[11]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 2]" Condition="!(Flags%2)">
+        <DisplayString>({m_storage.m_data.array[2]}, {m_storage.m_data.array[6]}, {m_storage.m_data.array[10]}, {m_storage.m_data.array[14]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 3]" Condition="Flags%2">
+        <DisplayString>({m_storage.m_data.array[12]}, {m_storage.m_data.array[13]}, {m_storage.m_data.array[14]}, {m_storage.m_data.array[15]})</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[row 3]" Condition="!(Flags%2)">
+        <DisplayString>({m_storage.m_data.array[3]}, {m_storage.m_data.array[7]}, {m_storage.m_data.array[11]}, {m_storage.m_data.array[15]})</DisplayString>
+      </Synthetic>
+    </Expand>
+  </Type>
+
+  <!-- Dynamic x Dynamic Matrix -->
+  <Type Name="Eigen::Matrix&lt;*,-1,-1,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Array&lt;*,-1,-1,*,*,*&gt;"/>
+    <DisplayString Condition="m_storage.m_data == 0">empty</DisplayString>
+    <DisplayString Condition="m_storage.m_data != 0">[{m_storage.m_rows}, {m_storage.m_cols}] (dynamic matrix)</DisplayString>
+    <Expand>
+      <ArrayItems Condition="Flags%2">
+        <!-- row major layout -->
+        <Rank>2</Rank>
+        <Size>$i==0 ? m_storage.m_rows : m_storage.m_cols</Size>
+        <ValuePointer>m_storage.m_data</ValuePointer>
+      </ArrayItems>
+      <ArrayItems Condition="!(Flags%2)">
+        <!-- column major layout -->
+        <Direction>Backward</Direction>
+        <Rank>2</Rank>
+        <Size>$i==0 ? m_storage.m_rows : m_storage.m_cols</Size>
+        <ValuePointer>m_storage.m_data</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <!-- Fixed x Dynamic Matrix -->
+  <Type Name="Eigen::Matrix&lt;*,*,-1,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Array&lt;*,*,-1,*,*,*&gt;"/>
+    <DisplayString Condition="m_storage.m_data == 0">empty</DisplayString>
+    <DisplayString Condition="m_storage.m_data != 0">[{$T2}, {m_storage.m_cols}] (dynamic column matrix)</DisplayString>
+    <Expand>
+      <ArrayItems Condition="Flags%2">
+        <!-- row major layout -->
+        <Rank>2</Rank>
+        <Size>$i==0 ? $T2 : m_storage.m_cols</Size>
+        <ValuePointer>m_storage.m_data</ValuePointer>
+      </ArrayItems>
+      <ArrayItems Condition="!(Flags%2)">
+        <!-- column major layout -->
+        <Direction>Backward</Direction>
+        <Rank>2</Rank>
+        <Size>$i==0 ? $T2 : m_storage.m_cols</Size>
+        <ValuePointer>m_storage.m_data</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <!-- Dynamic x Fixed Matrix -->
+  <Type Name="Eigen::Matrix&lt;*,-1,*,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Array&lt;*,-1,*,*,*,*&gt;"/>
+    <DisplayString Condition="m_storage.m_data == 0">empty</DisplayString>
+    <DisplayString Condition="m_storage.m_data != 0">[{m_storage.m_rows}, {$T2}] (dynamic row matrix)</DisplayString>
+    <Expand>
+      <ArrayItems Condition="Flags%2">
+        <!-- row major layout -->
+        <Rank>2</Rank>
+        <Size>$i==0 ? m_storage.m_rows : $T2</Size>
+        <ValuePointer>m_storage.m_data</ValuePointer>
+      </ArrayItems>
+      <ArrayItems Condition="!(Flags%2)">
+        <!-- column major layout -->
+        <Direction>Backward</Direction>
+        <Rank>2</Rank>
+        <Size>$i==0 ? m_storage.m_rows : $T2</Size>
+        <ValuePointer>m_storage.m_data</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <!-- Dynamic Column Vector -->
+  <Type Name="Eigen::Matrix&lt;*,1,-1,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Array&lt;*,1,-1,*,*,*&gt;"/>
+    <DisplayString Condition="m_storage.m_data == 0">empty</DisplayString>
+    <DisplayString Condition="m_storage.m_data != 0">[{m_storage.m_cols}] (dynamic column vector)</DisplayString>
+    <Expand>
+      <Item Name="[size]">m_storage.m_cols</Item>
+      <ArrayItems>
+        <Size>m_storage.m_cols</Size>
+        <ValuePointer>m_storage.m_data</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <!-- Dynamic Row Vector -->
+  <Type Name="Eigen::Matrix&lt;*,-1,1,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Array&lt;*,-1,1,*,*,*&gt;"/>
+    <DisplayString Condition="m_storage.m_data == 0">empty</DisplayString>
+    <DisplayString Condition="m_storage.m_data != 0">[{m_storage.m_rows}] (dynamic row vector)</DisplayString>
+    <Expand>
+      <Item Name="[size]">m_storage.m_rows</Item>
+      <ArrayItems>
+        <Size>m_storage.m_rows</Size>
+        <ValuePointer>m_storage.m_data</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <!-- Fixed Vector -->
+  <Type Name="Eigen::Matrix&lt;*,1,1,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Array&lt;*,1,1,*,*,*&gt;"/>
+    <DisplayString>[1] ({m_storage.m_data.array[0]})</DisplayString>
+    <Expand>
+      <Item Name="[x]">m_storage.m_data.array[0]</Item>
+    </Expand>
+  </Type>
+
+  <Type Name="Eigen::Matrix&lt;*,2,1,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Matrix&lt;*,1,2,*,*,*&gt;"/>
+    <AlternativeType Name="Eigen::Array&lt;*,2,1,*,*,*&gt;"/>
+    <AlternativeType Name="Eigen::Array&lt;*,1,2,*,*,*&gt;"/>
+    <DisplayString>[2] ({m_storage.m_data.array[0]}, {m_storage.m_data.array[1]})</DisplayString>
+    <Expand>
+      <Item Name="[x]">m_storage.m_data.array[0]</Item>
+      <Item Name="[y]">m_storage.m_data.array[1]</Item>
+    </Expand>
+  </Type>
+
+  <Type Name="Eigen::Matrix&lt;*,3,1,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Matrix&lt;*,1,3,*,*,*&gt;"/>
+    <AlternativeType Name="Eigen::Array&lt;*,3,1,*,*,*&gt;"/>
+    <AlternativeType Name="Eigen::Array&lt;*,1,3,*,*,*&gt;"/>
+    <DisplayString>[3] ({m_storage.m_data.array[0]}, {m_storage.m_data.array[1]}, {m_storage.m_data.array[2]})</DisplayString>
+    <Expand>
+      <Item Name="[x]">m_storage.m_data.array[0]</Item>
+      <Item Name="[y]">m_storage.m_data.array[1]</Item>
+      <Item Name="[z]">m_storage.m_data.array[2]</Item>
+    </Expand>
+  </Type>
+
+  <Type Name="Eigen::Matrix&lt;*,4,1,*,*,*&gt;">
+    <AlternativeType Name="Eigen::Matrix&lt;*,1,4,*,*,*&gt;"/>
+    <AlternativeType Name="Eigen::Array&lt;*,4,1,*,*,*&gt;"/>
+    <AlternativeType Name="Eigen::Array&lt;*,1,4,*,*,*&gt;"/>
+    <DisplayString>[4] ({m_storage.m_data.array[0]}, {m_storage.m_data.array[1]}, {m_storage.m_data.array[2]}, {m_storage.m_data.array[3]})</DisplayString>
+    <Expand>
+      <Item Name="[x]">m_storage.m_data.array[0]</Item>
+      <Item Name="[y]">m_storage.m_data.array[1]</Item>
+      <Item Name="[z]">m_storage.m_data.array[2]</Item>
+      <Item Name="[w]">m_storage.m_data.array[3]</Item>
+    </Expand>
+  </Type>
+  
+</AutoVisualizer>

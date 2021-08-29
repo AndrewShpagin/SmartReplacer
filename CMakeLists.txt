@@ -1,0 +1,12 @@
+﻿# CMakeList.txt : CMake project for SmartReplacer, include source and define
+# project specific logic here.
+#
+cmake_minimum_required (VERSION 3.8)
+set(CMAKE_CXX_STANDARD 17)
+
+project ("SmartReplacer")
+
+# Add source to this project's executable.
+add_executable (SmartReplacer "SmartReplacer.cpp" "Tokens.cpp" "BracketsWalker.cpp" "CharactersBitset.cpp" "comms-Math/cPool.cpp" "comms-Math/cStr.cpp" "comms-Math/cList.cpp")
+
+# TODO: Add tests and install targets if needed.

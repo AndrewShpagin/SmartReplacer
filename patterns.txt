@@ -1,0 +1,42 @@
+cepi_callback$zero$numbers($expression_Class,$expression_ptr,$expression_msg,$expression_w,$expression_func
+=====>
+$expression_w->connect($expression_msg, &$expression_Class::$expression_func, $expression_ptr
+==================================;
+cpi_callback$zero$numbers($expression_Class,$expression_msg,$expression_w,$expression_func
+=====>
+$expression_w->connect($expression_msg, &$expression_Class::$expression_func, this
+==================================;
+vpi_callback$zero$numbers($expression_msg,$expression_w,$expression_func
+=====>
+$expression_w->connect($expression_msg, &$expression_func
+==================================;
+pi_callback$zero$numbers($expression_msg,$expression_w,$expression_func
+=====>
+$expression_w->connect($expression_msg, &PenInterface::$expression_func, piptr()
+==================================;
+ui_callback$zero$numbers($expression_msg,$expression_w,$expression_func
+=====>
+$expression_w->connect($expression_msg, &PenInterface::$expression_func, piptr()
+==================================;
+fi_callback$zero$numbers($expression_msg,$expression_w,$expression_func
+=====>
+$expression_w->connect_as_first($expression_msg, &PenInterface::$expression_func, piptr()
+==================================;
+SAVE($variable1)$block ENDSAVE
+=====>
+SERIALIZE(static)$block SERIALIZE_END
+==================================;
+REG_MEMBER(_$variable,$expression
+=====>
+REG_AUTO($expression
+==================================;
+STATIC REG_
+=====>
+REG_
+==================================;
+REG_FSLIDER($variable, $expression_min, $expression_max, $expression_def)
+=====>
+SLIDER($variable, "$variable", $expression_min, $expression_max)
+
+
+
